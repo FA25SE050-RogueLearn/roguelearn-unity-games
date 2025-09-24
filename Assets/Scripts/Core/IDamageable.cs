@@ -1,0 +1,1 @@
+namespace BossFight2D.Combat { public interface IDamageable { void TakeDamage(int amount); } }
