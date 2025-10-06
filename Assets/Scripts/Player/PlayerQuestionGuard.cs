@@ -11,12 +11,15 @@ namespace BossFight2D.Player {
     public float correctExtraFreeze = 0.4f;
 
     void Awake(){ controller = GetComponent<PlayerController2D>(); combat = GetComponent<PlayerCombat>(); health = GetComponent<PlayerHealth>(); }
-    void OnEnable(){ EventBus.QuestionStarted += OnQuestionStarted; EventBus.AnswerSubmitted += OnAnswerOrTimeout; EventBus.QuestionTimeout += OnTimeout; }
-    void OnDisable(){ EventBus.QuestionStarted -= OnQuestionStarted; EventBus.AnswerSubmitted -= OnAnswerOrTimeout; EventBus.QuestionTimeout -= OnTimeout; }
+    void OnEnable(){ EventBus.QuestionStarted += OnQuestionStarted; EventBus.AnswerSubmitted += OnAnswerOrTimeout; EventBus.QuestionTimeout += OnTimeout; EventBus.AnswerModeExited += OnAnswerModeExited; EventBus.GamePaused += OnGamePaused; EventBus.GameResumed += OnGameResumed; }
+    void OnDisable(){ EventBus.QuestionStarted -= OnQuestionStarted; EventBus.AnswerSubmitted -= OnAnswerOrTimeout; EventBus.QuestionTimeout -= OnTimeout; EventBus.AnswerModeExited -= OnAnswerModeExited; EventBus.GamePaused -= OnGamePaused; EventBus.GameResumed -= OnGameResumed; }
 
-    void OnQuestionStarted(QuestionData q){ SetGuard(true); }
+    void OnQuestionStarted(QuestionData q){ SetGuard(ReadyStation.SafeZoneActive); }
     void OnAnswerOrTimeout(int _, bool correct){ if(correct){ StartCoroutine(UnfreezeAfterCorrect()); } else { SetGuard(false); } }
     void OnTimeout(){ SetGuard(false); }
+    void OnAnswerModeExited(){ SetGuard(false); }
+    void OnGamePaused(){ SetGuard(true); }
+    void OnGameResumed(){ SetGuard(false); }
 
     IEnumerator UnfreezeAfterCorrect(){ yield return new WaitForSeconds(correctExtraFreeze); SetGuard(false); }
 

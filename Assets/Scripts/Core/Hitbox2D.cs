@@ -69,8 +69,13 @@ namespace BossFight2D.Combat {
         dmg = other.GetComponentInParent<IDamageable>();
       }
       if(dmg!=null){
-        dmg.TakeDamage(_currentDamage);
-        if(debugLogHits) Debug.Log($"[Hitbox2D] {name} hit {other.name} for {_currentDamage}");
+        // Apply Power Play bonus only when striking the boss, and consume window on successful hit
+        int applied = _currentDamage;
+        var boss = other.GetComponentInParent<BossFight2D.Boss.BossStateMachine>();
+        var ppm = BossFight2D.Core.GameObjectFactory.FindOrCreate<BossFight2D.Core.PowerPlayManager>();
+        if(ppm!=null && boss!=null){ applied = ppm.ModifyDamageOnBossHit(applied); BossFight2D.Systems.EventBus.RaisePowerPlayHitConfirmed(); }
+        dmg.TakeDamage(applied);
+        if(debugLogHits) Debug.Log($"[Hitbox2D] {name} hit {other.name} for {applied}");
         _hitSet.Add(other);
       }
     }
@@ -92,8 +97,12 @@ namespace BossFight2D.Combat {
         dmg = other.GetComponentInParent<IDamageable>();
       }
       if(dmg!=null){
-        dmg.TakeDamage(_currentDamage);
-        if(debugLogHits) Debug.Log($"[Hitbox2D] (Stay) {name} hit {other.name} for {_currentDamage}");
+        int applied = _currentDamage;
+        var boss = other.GetComponentInParent<BossFight2D.Boss.BossStateMachine>();
+        var ppm = BossFight2D.Core.GameObjectFactory.FindOrCreate<BossFight2D.Core.PowerPlayManager>();
+        if(ppm!=null && boss!=null){ applied = ppm.ModifyDamageOnBossHit(applied); BossFight2D.Systems.EventBus.RaisePowerPlayHitConfirmed(); }
+        dmg.TakeDamage(applied);
+        if(debugLogHits) Debug.Log($"[Hitbox2D] (Stay) {name} hit {other.name} for {applied}");
         _hitSet.Add(other);
       }
     }

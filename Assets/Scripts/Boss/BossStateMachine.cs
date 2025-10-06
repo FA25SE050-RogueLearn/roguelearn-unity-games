@@ -12,8 +12,8 @@ namespace BossFight2D.Boss {
     bool perfectSuccess;
 
     void Awake(){ if(combat==null) combat = GetComponent<BossCombat>(); }
-    void OnEnable(){ EventBus.PerfectDodgeSuccess += OnPerfectDodgeSuccess; }
-    void OnDisable(){ EventBus.PerfectDodgeSuccess -= OnPerfectDodgeSuccess; }
+    void OnEnable(){ EventBus.PerfectDodgeSuccess += OnPerfectDodgeSuccess; EventBus.GamePaused += OnGamePaused; EventBus.GameResumed += OnGameResumed; }
+    void OnDisable(){ EventBus.PerfectDodgeSuccess -= OnPerfectDodgeSuccess; EventBus.GamePaused -= OnGamePaused; EventBus.GameResumed -= OnGameResumed; }
 
     void OnPerfectDodgeSuccess(){ perfectSuccess = true; }
 
@@ -50,6 +50,16 @@ namespace BossFight2D.Boss {
         // Safety net if combat missing
         EventBus.RaiseWrongAnswerChallengeEnded();
       }
+    }
+
+    void OnGamePaused(){
+      // Freeze combat and cancel any pending invocations during pause
+      if(combat!=null) combat.enabled = false;
+      CancelInvoke();
+    }
+    void OnGameResumed(){
+      if(combat!=null) combat.enabled = true;
+      // Do not re-schedule previous invokes; resume normal flow
     }
 
     public void TakeDamage(int amount){ ApplyDamage(amount);} 

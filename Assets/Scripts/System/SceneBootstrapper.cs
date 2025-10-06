@@ -25,17 +25,24 @@ public class SceneBootstrapper : MonoBehaviour
 
     private void Start()
     {
+        // If this scene contains a Main Menu, avoid spawning gameplay systems
+        var isMainMenu = FindFirstObjectByType<BossFight2D.UI.MainMenuUI>() != null;
+        if (isMainMenu)
+        {
+            EnsureGameManagerOnly();
+            // Do not spawn player, boss, question systems, or ready station in the main menu.
+            return;
+        }
+
         EnsureSystems();
         var player = EnsurePlayer();
         EnsureBoss();
         // Optionally: you can add camera or lighting bootstrap here later
 
-        // Auto-start gameplay so the scene loads directly into Play state
-        var gm = FindFirstObjectByType<GameManager>();
-        if (gm != null && gm.State == GameState.Init)
-        {
-            gm.StartGame();
-        }
+        // Gate game start via a ReadyStation trigger near the player
+        EnsureReadyStation(player);
+        // Start is gated by ReadyStation; do not auto-start here.
+        // The game will transition from Init to Playing when the player marks Ready at the station.
     }
 
     private void EnsureSystems()
@@ -140,6 +147,18 @@ public class SceneBootstrapper : MonoBehaviour
         if (FindFirstObjectByType<BossFight2D.UI.BossHUD>() == null)
         {
             systemsRoot.AddComponent<BossFight2D.UI.BossHUD>();
+        }
+
+        // Ensure GameStateUI exists so gameplay theme music and Win/Lose overlays are available
+        if (FindFirstObjectByType<BossFight2D.UI.GameStateUI>() == null)
+        {
+            systemsRoot.AddComponent<BossFight2D.UI.GameStateUI>();
+        }
+
+        // Ensure PauseMenu exists so player can open settings/pause with Escape
+        if (FindFirstObjectByType<BossFight2D.UI.PauseMenu>() == null)
+        {
+            systemsRoot.AddComponent<BossFight2D.UI.PauseMenu>();
         }
 
         // Ensure BossHealth slider exists in the UI (auto-create if missing)
@@ -283,5 +302,29 @@ public class SceneBootstrapper : MonoBehaviour
         slider.fillRect = fillRT;
         slider.handleRect = null; // no handle for progress bar
         slider.direction = Slider.Direction.LeftToRight;
+    }
+
+    // Create or reuse a single-player ReadyStation near the player to gate game start
+    private void EnsureReadyStation(GameObject player)
+    {
+        if (FindFirstObjectByType<ReadyStation>() != null) return;
+        var go = new GameObject("ReadyStation");
+        go.transform.position = player != null ? player.transform.position + new Vector3(1.5f, 0f, 0f) : Vector3.zero;
+        var col = go.AddComponent<BoxCollider2D>();
+        col.isTrigger = true;
+        col.size = new Vector2(2f, 2f);
+        go.AddComponent<ReadyStation>();
+    }
+
+    // Minimal systems for Main Menu scenes: only ensure GameManager so menu can control start.
+    private void EnsureGameManagerOnly()
+    {
+        var gm = FindFirstObjectByType<GameManager>();
+        if (gm == null)
+        {
+            var systemsRoot = new GameObject("Systems");
+            systemsRoot.AddComponent<GameManager>();
+        }
+        // Avoid creating QuestionManager, Player/Boss HUDs, Lifelines, Dev Hotkeys, etc.
     }
 }

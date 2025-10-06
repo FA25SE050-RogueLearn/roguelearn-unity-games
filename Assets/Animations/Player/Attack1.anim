@@ -22,7 +22,7 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: 2094397434, guid: 078177bc5234a464b8ac6c2f1450dbb3, type: 3}
-    - time: 0.15
+    - time: 0.16666667
       value: {fileID: -1063506683, guid: 078177bc5234a464b8ac6c2f1450dbb3, type: 3}
     - time: 0.35
       value: {fileID: -938186487, guid: 078177bc5234a464b8ac6c2f1450dbb3, type: 3}
@@ -78,4 +78,18 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.33333334
+    functionName: AnimationEvent_HitboxStart
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5
+    functionName: AnimationEvent_HitboxEnd
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

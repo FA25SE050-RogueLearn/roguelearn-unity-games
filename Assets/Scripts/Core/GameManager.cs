@@ -9,6 +9,13 @@ namespace BossFight2D.Core {
     public void StartGame(){ State = GameState.Playing; Systems.EventBus.RaiseGameStarted(); }
     public void WinGame(){ State = GameState.Win; Systems.EventBus.RaiseGameWon(); }
     public void LoseGame(){ State = GameState.Lose; Systems.EventBus.RaiseGameLost(); }
+    public void PauseGame(){
+      // Allow pausing from Init or Playing (block only in Win/Lose/Paused)
+      if(State != GameState.Win && State != GameState.Lose && State != GameState.Paused){
+        State = GameState.Paused; Time.timeScale = 0f; Systems.EventBus.RaiseGamePaused();
+      }
+    }
+    public void ResumeGame(){ if(State == GameState.Paused){ State = GameState.Playing; Time.timeScale = 1f; Systems.EventBus.RaiseGameResumed(); } }
     public void Restart(){ var s=UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex; UnityEngine.SceneManagement.SceneManager.LoadScene(s); }
   }
 }
