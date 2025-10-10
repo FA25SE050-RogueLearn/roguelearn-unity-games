@@ -7,6 +7,7 @@ using BossFight2D.Core;
 using BossFight2D.UI;
 using Cinemachine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(-1000)]
 public class SceneBootstrapper : MonoBehaviour
@@ -25,6 +26,12 @@ public class SceneBootstrapper : MonoBehaviour
 
     private void Start()
     {
+        // Skip bootstrap in Dashboard or character preview scenes to avoid spawning gameplay systems
+        var sceneName = SceneManager.GetActiveScene().name;
+        if (sceneName == "Dashboard" || sceneName == "DashboardCharacterPreview")
+        {
+            return;
+        }
         // If this scene contains a Main Menu, avoid spawning gameplay systems
         var isMainMenu = FindFirstObjectByType<BossFight2D.UI.MainMenuUI>() != null;
         if (isMainMenu)
