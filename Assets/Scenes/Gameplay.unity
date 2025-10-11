@@ -1458,6 +1458,99 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 614045614}
   m_CullTransparentMesh: 1
+--- !u!1 &698437208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 698437211}
+  - component: {fileID: 698437209}
+  - component: {fileID: 698437210}
+  - component: {fileID: 698437212}
+  m_Layer: 0
+  m_Name: QuestionManager_Networked
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &698437209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698437208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1574527891
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &698437210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698437208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e680151f20b0d55408b86dc33f4cdfdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questionText: {fileID: 1537944974}
+  timerText: {fileID: 0}
+  answerButtons:
+  - {fileID: 716516817}
+  - {fileID: 1200709894}
+  - {fileID: 1035519898}
+  - {fileID: 1421830946}
+--- !u!4 &698437211
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698437208}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.362545, y: 6.8490844, z: -0.16321601}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &698437212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698437208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c724f66592b2104381bf815d1961e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questionsJson: {fileID: 4900000, guid: 31731c72dc6f8d64db4ac5705fc070b3, type: 3}
+  Pack:
+    name: 
+    questions: []
+  CurrentIndex: -1
+  RemainingTime:
+    m_InternalValue: 0
 --- !u!1 &716516815
 GameObject:
   m_ObjectHideFlags: 0
@@ -3425,7 +3518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4020aa31ca8ad84da8dacd0ef0a981e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  winMusic: {fileID: 0}
+  winMusic: {fileID: 8300000, guid: d23b91b066e8b1741868da0c780863bf, type: 3}
   loseMusic: {fileID: 8300000, guid: 94a93390e608c994c9746575260721c3, type: 3}
   gameplayMusic: {fileID: 8300000, guid: 7a8099af7a2cdbe40b9e114711dbcf5d, type: 3}
   uiFont: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
@@ -5072,6 +5165,7 @@ MonoBehaviour:
   combat: {fileID: 6248137273392178570}
   wrongTelegraph: 0.6
   perfectWindow: 0.2
+  animator: {fileID: 6482551081354418435}
 --- !u!1 &5876634182655718949
 GameObject:
   m_ObjectHideFlags: 0
@@ -5307,3 +5401,4 @@ SceneRoots:
   - {fileID: 290277056}
   - {fileID: 1565799925}
   - {fileID: 8055597491553537260}
+  - {fileID: 698437211}

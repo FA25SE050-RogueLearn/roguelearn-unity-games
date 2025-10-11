@@ -1,5 +1,6 @@
 // PlayerHUD.cs - Binds PlayerHealth/PlayerFocus to UI Sliders named "Health" and "Focus"
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace BossFight2D.UI
@@ -14,8 +15,23 @@ namespace BossFight2D.UI
 
         private void Awake()
         {
-           
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            FindAndBind();
+        }
 
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            // Re-find and bind references when a new scene loads (e.g., after a replay)
+            FindAndBind();
+        }
+
+        private void FindAndBind()
+        {
             // Resolve UI by common names if not explicitly assigned
             if (healthSlider == null)
             {
@@ -28,15 +44,12 @@ namespace BossFight2D.UI
                 if (go != null) focusSlider = go.GetComponent<Slider>();
             }
 
-            // Initialize once
-            UpdateBars(force: true);
-        }
-
-        private void Start()
-        {
-             // Resolve gameplay components
+            // Resolve gameplay components
             if (playerHealth == null) playerHealth = FindFirstObjectByType<BossFight2D.Player.PlayerHealth>();
             if (playerFocus == null) playerFocus = FindFirstObjectByType<BossFight2D.Player.PlayerFocus>();
+
+            // Initialize once
+            UpdateBars(force: true);
         }
 
         private void Update()
