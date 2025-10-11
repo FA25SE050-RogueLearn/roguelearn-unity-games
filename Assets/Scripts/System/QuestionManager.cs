@@ -5,9 +5,7 @@ using System.Collections.Generic;
 
 namespace BossFight2D.Systems
 {
-    [Serializable] public class QuestionData { public int id; public string topic; public string difficulty; public string prompt; public string[] options; public int correctIndex; public int timeLimitSec = 20; public string explanation; }
-    [Serializable] public class QuestionPackData { public string name; public List<QuestionData> questions = new(); }
-    [Serializable] class Wrapper { public QuestionPackData pack; }
+
 
     public class QuestionManager : MonoBehaviour
     {
@@ -58,6 +56,12 @@ namespace BossFight2D.Systems
 
         void OnGameStarted()
         {
+            // Reset and reload questions to ensure a fresh state on every new game (including replays)
+            if (questionsJson == null) { questionsJson = Resources.Load<TextAsset>("QuestionPacks/questions_pack1"); }
+            if (questionsJson != null) { var w = JsonUtility.FromJson<Wrapper>(questionsJson.text); Pack = w != null ? w.pack : null; }
+            CurrentIndex = -1;
+            QuestionActive = false;
+
             // Start the first question when the game starts
             if (!QuestionActive && (CurrentIndex < 0))
             {
